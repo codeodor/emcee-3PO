@@ -1,1 +1,3 @@
 Gonna experiment w/ https://github.com/gilesbowkett/archaeopteryx/
+
+The goal is to take some pre-defined music, run it through a markov model to generate new music based on the original. 
