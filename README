@@ -1,3 +1,10 @@
 Gonna experiment w/ https://github.com/gilesbowkett/archaeopteryx/
 
-The goal is to take some pre-defined music, run it through a markov model to generate new music based on the original. 
+The goal is to take a song and run it through a markov model to generate new music based on the original. 
+
+Some todos in no particular order:
+1. Read from sheet music
+2. Use different instruments instead of simply playing the notes as written / make it symphonic
+3. Choose probabilities in some smart way to provide to Arkx (right now it's just 100% play this note)
+4. Mixing multiple songs
+5. MIDI as input and output
