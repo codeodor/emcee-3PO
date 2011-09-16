@@ -31,10 +31,4 @@ class ImageProcessor
 end
 
 
-ip = ImageProcessor.new('star_wars_main_title.jpg')
-
-puts ip.image.rows
-puts ip.rows.count
-puts ip.image.columns
-puts ip.columns.count
 
