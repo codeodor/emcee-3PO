@@ -1,4 +1,3 @@
-require 'test/unit'
 require 'test_helper'
 require_relative '../lib/image_processor'
 

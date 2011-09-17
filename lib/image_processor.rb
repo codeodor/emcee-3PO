@@ -13,19 +13,23 @@ class ImageProcessor
   end
   
   def rows
-    result = []
-    (0..(@image.rows-1)).each do |row_num|
-      result << @image.get_pixels(0, row_num, @image.columns, 1)
+    @rows ||= begin
+      result = []
+      (0..(@image.rows-1)).each do |row_num|
+        result << @image.get_pixels(0, row_num, @image.columns, 1)
+      end
+      result
     end
-    return result
   end
   
   def columns
-    result = []
-    (0..(@image.columns-1)).each do |col_num|
-      result << @image.get_pixels(col_num, 0, 1, @image.rows)
+    @columns ||= begin
+      result = []
+      (0..(@image.columns-1)).each do |col_num|
+        result << @image.get_pixels(col_num, 0, 1, @image.rows)
+      end
+      result
     end
-    return result
   end 
   
   def projection(pixel_arrays)
@@ -41,11 +45,11 @@ class ImageProcessor
   end
   
   def y_projection
-    projection(rows)
+    @y_projection ||= projection(rows)
   end
   
   def x_projection
-    projection(columns)
+    @x_projection ||= projection(columns)
   end
   
 end
