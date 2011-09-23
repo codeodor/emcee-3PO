@@ -6,7 +6,7 @@ class OpticalMusicRecognizerTest < Test::Unit::TestCase
     @omr = OpticalMusicRecognizer.new('test/clementine_sheet_music.gif')
   end
   
-  def test_omr_recognizes_3_systems_in_my_darling_clementine
-    assert_equal @omr.systems.count, 3
+  def test_omr_recognizes_3_staves_in_my_darling_clementine
+    assert_equal 3, @omr.staves.count
   end
 end

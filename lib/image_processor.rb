@@ -1,4 +1,5 @@
 require 'RMagick'
+require 'projection'
 
 class ImageProcessor
   include Magick
@@ -32,24 +33,12 @@ class ImageProcessor
     end
   end 
   
-  def projection(pixel_arrays)
-    counts = []
-    pixel_arrays.each do |px_array|
-      counts << 0
-      px_array.each do |pixel|
-        pixel_is_dark = (pixel.red + pixel.green + pixel.blue) < 3 * 2**15 
-        counts[-1] += 1 if pixel_is_dark
-      end
-    end
-    return counts
-  end
-  
   def y_projection
-    @y_projection ||= projection(rows)
+    @y_projection ||=  Projection.new(rows)
   end
   
   def x_projection
-    @x_projection ||= projection(columns)
+    @x_projection ||=  Projection.new(columns)
   end
   
 end
