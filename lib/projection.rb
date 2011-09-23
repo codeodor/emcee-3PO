@@ -18,24 +18,29 @@ class Projection
   end
   
   def local_maxima(threshold)
-    slope = []
     result = []
-    padded_projection = [0] + @projection + [0]
-    @projection.each_index do |i|
-      slope << (padded_projection[i+1] - padded_projection[i-1]) / 2
-    end
     
-    slope.each_index do |i|
+    0.upto(slope.length - 2) do |i|
       j = i+1
       j += 1 while slope[j] == 0 && j < slope.size-1
       
-      if(slope[i] > 0 && slope[j] <= 0 && (@projection[i] > threshold || @projection[i+1] > threshold))
-        result[result.length] = i
-      end
+      slope_changes = slope[i] > 0 && slope[j] <= 0
+      projection_meets_threshold = @projection[i] > threshold || @projection[i+1] > threshold
       
-      break if i == slope.length - 2
+      result[result.length] = i if slope_changes && projection_meets_threshold
     end
-     return result
+    
+    return result
   end
 
+  private 
+  def slope
+    result = []
+    padded_projection = [0] + @projection + [0]
+    
+    @projection.each_index {|i| result << (padded_projection[i+1] - padded_projection[i-1]) / 2 }
+    
+    return result
+  end
+  
 end
