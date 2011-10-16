@@ -8,7 +8,7 @@ class ProjectionTest < Test::Unit::TestCase
   end
   
   def test_projection_gives_correct_local_maxima
-    assert_equal [1, 6, 12, 15], @ip.y_projection.local_maxima(threshold = 0)
+    assert_equal [0, 5, 11, 14, 18], @ip.y_projection.local_maxima(threshold = 0)
   end
   
   def test_y_projection_gives_accurate_count_of_dark_pixels_per_row

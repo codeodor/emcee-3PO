@@ -1,50 +1,41 @@
 class OpticalMusicRecognizer
   LINES_PER_STAFF = 5
   
-  def initialize(sheet_music_image)
-    @image_processor = ImageProcessor.new(sheet_music_image)
+  def initialize(sheet_music_image, image_processor=ImageProcessor)
+    @image_processor = image_processor.new(sheet_music_image)
   end
   
   def staves
     threshold = @image_processor.y_projection.inject(:+) / @image_processor.y_projection.count
     local_maxima = @image_processor.y_projection.local_maxima(threshold)
-  
-    stave_ranges = detect_stave_ranges(local_maxima)
-    return stave_ranges
+    return stave_ranges(local_maxima)
   end
   
   
   private
-  def find_window_with_smallest_distance(windows)
-    smallest_window = nil
-    smallest_window_distance = 10000000
-    windows.each do |window|
-      cumulative_distance = 0
-      window.each_index do |i|
-        break if i == LINES_PER_STAFF - 1
-        cumulative_distance += window[i+1] - window[i]
-      end
-      if smallest_window_distance > cumulative_distance
-        smallest_window_distance = cumulative_distance
-        smallest_window = window
-      end
-    end
-    return smallest_window
+  def tightest_cluster(windows)
+    distances = windows.map{|x| x[-1] - x[0]}
+    return windows[distances.index(distances.min)]
   end
   
   
-  def detect_stave_ranges(line_ranges)
+  def stave_ranges(line_ranges)
     windows = [] 
-    line_ranges.each_index{ |i| windows << line_ranges[i,5] }
-    windows.reject!{ |x| x.size != 5 }
-    stave_ranges = []
+    line_ranges.each_cons(5){|x| windows << x}
+    
+    stave_indexes = []
     while windows.count > 0 
-      stave_ranges << find_window_with_smallest_distance(windows)
-      stave_ranges[-1].each do |range|
-        windows.reject!{|x| x.include?(range) }
-      end
+      stave_indexes << tightest_cluster(windows)
+      windows.keep_if{|window| (window & stave_indexes[-1]).empty? }
     end
-    return stave_ranges
+    
+    as_ranges = stave_indexes.map{|x| x.first..x.last}.sort{|x,y| x.first <=> y.first}
+    
+    return expand_to_include_off_staff_notes(as_ranges)
+  end
+  
+  def expand_to_include_off_staff_notes(staff_ranges)
+    return staff_ranges
   end
 
 end

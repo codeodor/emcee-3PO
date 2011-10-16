@@ -8,5 +8,9 @@ class OpticalMusicRecognizerTest < Test::Unit::TestCase
   
   def test_omr_recognizes_3_staves_in_my_darling_clementine
     assert_equal 3, @omr.staves.count
+    puts "\n-------------------------------------- "
+    puts "Staves found in My Darling Clementine: "
+    puts @omr.staves.inspect
+    puts "-------------------------------------- "
   end
 end
